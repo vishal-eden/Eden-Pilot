@@ -15,12 +15,7 @@ uint64_t epoch_arrival=0;
 int status = WL_IDLE_STATUS;
 WiFiServer server(80);
 
-//#include "esp_system.h"
-// struct AccelData {
-//   float x, y, z;
-//   float temp;
-//   unsigned long timestamp_ms;
-// }; //
+
 // struct RpmData {
 //   float rpm;
 //   float rps;
@@ -67,13 +62,10 @@ const int tdspin2=A5;
 const int hallpin = 4;
 const int max_logs = 100;  // Size of full buffer
 
-//esp_reset_reason_t reason;
 
 Adafruit_MPU6050 mpu;
 
 static bool RTC_SYNCED=false;
-// AccelData accel_log[max_logs];
-// AccelData accel_log2[max_logs];
 
 FlowData flow_log[max_logs];
 FlowData flow_log1[max_logs];
@@ -105,87 +97,84 @@ TempData loop_temp(int pin, int digital);
 
 
  FlowData loop_flow(int pin, int digital) {
-  digitalWrite(digital, HIGH);
+  digitalWrite(digital, HIGH); //open relay
   unsigned long start=millis();
-  while(millis()-start<150);
+  while(millis()-start<250);
   int sum = 0;
-  for (int i = 0; i < flow_samples; ++i){ //digitalWrite(flow_digital,HIGH); delay(10); 
+  for (int i = 0; i < flow_samples; ++i){ 
   sum += analogRead(pin); 
-  //digitalWrite(flow_digital,LOW);
   }
   float avg_flow = sum * (1.0f / flow_samples);
 
   FlowData d;
   d.flow = avg_flow;
+  unsigned long end=millis();
 
-  //d.ts = rtc.now().unixtime();  // <-- epoch seconds
+  while(millis()-end<250);
 
-//   uint64_t now = (uint64_t) millis();
-// uint64_t delta = now - epoch_arrival;   // wrap-safe!
-// d.ts = receivedTime + (uint64_t)delta;
+
   Serial.println("time is");
-  //Serial.println(d.ts);
-  digitalWrite(digital,LOW);
+  digitalWrite(digital,LOW); //close relay
   return d;
 }
 
 TempData loop_temp(int pin, int digital) {
-  digitalWrite(digital, HIGH);
+  digitalWrite(digital, HIGH); //open relay
   unsigned long start=millis();
-  while(millis()-start<150);
+  while(millis()-start<250);
   int sum = 0;
-  for (int i = 0; i < temp_samples; ++i){ //digitalWrite(flow_digital,HIGH); delay(10); 
+  for (int i = 0; i < temp_samples; ++i){ 
   sum += analogRead(pin); 
-  //digitalWrite(flow_digital,LOW);
   }
   float avg_temp = sum * (1.0f / temp_samples);
   TempData d;
   d.temp = avg_temp;
-// uint64_t now = (uint64_t)millis();
-// uint64_t delta = now - epoch_arrival;   // wrap-safe!
-// d.ts = receivedTime + (uint64_t)delta;
+  unsigned long end=millis();
 
-  digitalWrite(digital,LOW);
+  while(millis()-end<250);
+
+  digitalWrite(digital,LOW); //close relay
   return d;
 }
 
 TdsData loop_tds(int pin, int digital) {
-  digitalWrite(digital,HIGH);
+  digitalWrite(digital,HIGH); //open relay
   unsigned long start=millis();
-  while(millis()-start<150);
+  while(millis()-start<250);
   int sum = 0;
-  for (int i = 0; i < tds_samples; ++i) {//digitalWrite(tds_digital,HIGH); delay(10); 
-  sum += analogRead(pin);// digitalWrite(tds_digital,LOW);
+  for (int i = 0; i < tds_samples; ++i) {
+  sum += analogRead(pin);
   }
   float avg_tds = sum * (1.0f / tds_samples);
 
   TdsData d;
   d.tds = avg_tds;
-// uint64_t now = (uint64_t)millis();
-// uint64_t delta = now - epoch_arrival;   // wrap-safe!
-// d.ts = receivedTime + (uint64_t)delta;  
-  digitalWrite(digital,LOW);
+  unsigned long end=millis();
+
+  while(millis()-end<250);
+
+  digitalWrite(digital,LOW); //close relay
 
   return d;
 
 }
 
 PhData loop_ph(int pin, int digital) {
-  digitalWrite(digital,HIGH);
+  digitalWrite(digital,HIGH); //open relay
   unsigned long start=millis();
-  while(millis()-start<150);
+  while(millis()-start<250);
   int sum = 0;
-  for (int i = 0; i < ph_samples; ++i) {//digitalWrite(tds_digital,HIGH); delay(10); 
-  sum += analogRead(pin);// digitalWrite(tds_digital,LOW);
+  for (int i = 0; i < ph_samples; ++i) {
+  sum += analogRead(pin);
   }
   float avg_ph = sum * (1.0f / ph_samples);
 
   PhData d;
   d.ph = avg_ph;
-// uint64_t now = (uint64_t)millis();
-// uint64_t delta = now - epoch_arrival;   // wrap-safe!
-// d.ts = receivedTime + (uint64_t)delta;  Serial.println("ph is");
-  digitalWrite(digital,LOW);
+  unsigned long end=millis();
+
+  while(millis()-end<250);
+  digitalWrite(digital,LOW); //close relay
 
   return d;
 
@@ -236,7 +225,6 @@ PhData loop_ph(int pin, int digital) {
 
 
 void setup() {
-  // put your setup code here, to run once:
 
 pinMode(flowdig, OUTPUT);
 pinMode(flowdig2, OUTPUT);
@@ -273,19 +261,12 @@ digitalWrite(tdsdig2, LOW);
   }
 server.begin();  
 
-  // pinMode(5,OUTPUT);
-  // digitalWrite(5,HIGH);
-
   Wire.begin(); //for i2c (clock)
   unsigned long start = millis();
   while (!Serial && millis() - start < 5000);
 
-  // SD.begin(5);
-  // delay(500);
-  // SD.mkdir("/testing_multisensor");
   delay(500);
 
- // pinMode(4,INPUT); //declares
 }
 
 void loop() {
@@ -295,7 +276,6 @@ void loop() {
   if (WiFi.status() != WL_CONNECTED) {
   WiFi.end();
   WiFi.begin(ssid, pass);
-  // retry with timeout
 }
 
   WiFiClient client = server.available();
@@ -322,10 +302,7 @@ void loop() {
     return;
 
   }
-  //   client.println("HTTP/1.1 200 OK");
-  // client.println("Content-Type: text/plain; charset=utf-8");
-  // client.println("Connection: close");
-  // client.println();
+
     for (int i = 0; i < 1; ++i) {
   // collect
 flow_log[sample_index]  = loop_flow(flowpin,  flowdig);
@@ -346,43 +323,34 @@ tds_log1[sample_index]  = loop_tds(tdspin2, tdsdig2);
   client.println();
 Serial.println("HI");
 client.print("flow=");
-float flow_map  = (flow_log[sample_index].flow  - 204.6f) / 136.4f;
-client.print(flow_map);
+client.print(flow_log[sample_index].flow);
 
 
 Serial.print("raw flow=");
 Serial.println(flow_log[sample_index].flow);
 
-// client.print(" ts=");
-// client.print(flow_log[sample_index].ts);
 client.print("\n");
 Serial.println();
 float flow_map1 = (flow_log1[sample_index].flow - 204.6f) / 136.4f;
 client.print("flow1=");
-client.print(flow_map1);
+client.print(flow_log1[sample_index].flow);
 
 Serial.print("raw flow1=");
 Serial.println(flow_log1[sample_index].flow);
-// client.print(" ts=");
-// client.print(flow_log1[sample_index].ts);
 client.print("\n");
 float ph_map  = (ph_log[sample_index].ph  - 204.6f) / 58.457f;
 client.print("ph=");
-client.print(ph_map);
-// client.print(" ts=");
-// client.print(ph_log[sample_index].ts);
+client.print(ph_log[sample_index].ph);
 client.print("\n");
 float ph_map1 = (ph_log1[sample_index].ph - 204.6f) / 58.457f;
 client.print("ph1=");
-client.print(ph_map1);
-// client.print(" ts=");
-// client.print(ph_log1[sample_index].ts);
+client.print(ph_log1[sample_index].ph);
 
 client.print("\n");
 
 client.print("temp=");
 float temp_map  = (temp_log[sample_index].temp  - 204.6f) / 3.860f;
-client.print(temp_map);
+client.print(temp_log[sample_index].temp);
 
 Serial.print("temp is ");
 Serial.println(temp_map);
@@ -390,8 +358,6 @@ Serial.println(temp_map);
 Serial.print("raw temp is");
 Serial.println(temp_log[sample_index].temp);
 
-// client.print(" ts=");
-// client.print(temp_log[sample_index].ts);
 
 client.print("\n");
 
@@ -401,43 +367,36 @@ Serial.print("raw temp1 is");
 Serial.println(temp_log1[sample_index].temp);
 
 
-client.print(temp_map1);
+client.print(temp_log1[sample_index].temp);
 
 Serial.print("temp 1 is ");
 Serial.println(temp_map1);
 
 
 
-// client.print(" ts=");
-// client.print(temp_log1[sample_index].ts);
 
 client.print("\n");
 
 client.print("tds=");
 float tds_map  = (tds_log[sample_index].tds  - 204.6f) / 0.0016368f;
-client.print(tds_map);
+client.print(tds_log[sample_index].tds);
 Serial.print("tds is ");
 Serial.println(tds_map);
 
-// client.print(" ts=");Serial.print("raw temp1 is");
 Serial.println("raw tds is");
 Serial.println(tds_log[sample_index].tds);
 
-// client.print(tds_log[sample_index].ts);
 
 client.print("\n");
 
 client.print("tds1=");
 float tds_map1 = (tds_log1[sample_index].tds - 204.6f) / 0.0016368f;
-client.print(tds_map1);
+client.print(tds_log1[sample_index].tds);
 Serial.print("tds 1 is ");
 Serial.println(tds_map1);
 
 Serial.println("raw tds1 is");
 Serial.println(tds_log1[sample_index].tds);
-
-// client.print(" ts=");
-// client.print(tds_log1[sample_index].ts);
 
 client.print("\n");
 
@@ -454,17 +413,9 @@ client.print("---\n");
   client.println("OK");
 client.stop();
 
-  //client.stop();
-
-      // accel_log[sample_index]=loop_accel(samples);
-
-      // accel_log[sample_index]=loop_accel2(samples);
-      // Serial.print("Collected RPM: ");
-      // Serial.println(rpm_log[sample_index].rpm);
       sample_index++;
     }
 
-    //transmission( flow_log, flow_log1, tds_log, tds_log1,  ph_log, ph_log1, temp_log,temp_log1,max_logs, sample_index);
     sample_index=0;
  
 
