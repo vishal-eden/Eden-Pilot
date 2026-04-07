@@ -98,13 +98,13 @@ TempData loop_temp(int pin, int digital);
 
  FlowData loop_flow(int pin, int digital) {
   digitalWrite(digital, HIGH); //open relay
-  unsigned long start=millis();
-  while(millis()-start<250);
+  unsigned long start=millis(); 
+  while(millis()-start<250);//ensure enough time for switch to open up before data collection
   int sum = 0;
   for (int i = 0; i < flow_samples; ++i){ 
-  sum += analogRead(pin); 
+  sum += analogRead(pin);  //take and add analog measurements
   }
-  float avg_flow = sum * (1.0f / flow_samples);
+  float avg_flow = sum * (1.0f / flow_samples); //take average of measurements
 
   FlowData d;
   d.flow = avg_flow;
@@ -121,12 +121,12 @@ TempData loop_temp(int pin, int digital);
 TempData loop_temp(int pin, int digital) {
   digitalWrite(digital, HIGH); //open relay
   unsigned long start=millis();
-  while(millis()-start<250);
+  while(millis()-start<250); //ensure enough time for switch to open up before data collection
   int sum = 0;
   for (int i = 0; i < temp_samples; ++i){ 
-  sum += analogRead(pin); 
+  sum += analogRead(pin); //take and add analog measurements
   }
-  float avg_temp = sum * (1.0f / temp_samples);
+  float avg_temp = sum * (1.0f / temp_samples); //take average of measurements
   TempData d;
   d.temp = avg_temp;
   unsigned long end=millis();
@@ -139,13 +139,13 @@ TempData loop_temp(int pin, int digital) {
 
 TdsData loop_tds(int pin, int digital) {
   digitalWrite(digital,HIGH); //open relay
-  unsigned long start=millis();
-  while(millis()-start<250);
+  unsigned long start=millis(); 
+  while(millis()-start<250); //ensure enough time for switch to open up before data collection
   int sum = 0;
   for (int i = 0; i < tds_samples; ++i) {
-  sum += analogRead(pin);
+  sum += analogRead(pin); //take and add analog measurements
   }
-  float avg_tds = sum * (1.0f / tds_samples);
+  float avg_tds = sum * (1.0f / tds_samples); //take average of measurements
 
   TdsData d;
   d.tds = avg_tds;
@@ -162,12 +162,12 @@ TdsData loop_tds(int pin, int digital) {
 PhData loop_ph(int pin, int digital) {
   digitalWrite(digital,HIGH); //open relay
   unsigned long start=millis();
-  while(millis()-start<250);
+  while(millis()-start<250); //ensure enough time for switch to open up before data collection
   int sum = 0;
   for (int i = 0; i < ph_samples; ++i) {
-  sum += analogRead(pin);
+  sum += analogRead(pin); //take and add analog measurements
   }
-  float avg_ph = sum * (1.0f / ph_samples);
+  float avg_ph = sum * (1.0f / ph_samples); //take average of measurements
 
   PhData d;
   d.ph = avg_ph;
@@ -226,6 +226,7 @@ PhData loop_ph(int pin, int digital) {
 
 void setup() {
 
+//declare digital pins as output (sending signals instead of receiving)
 pinMode(flowdig, OUTPUT);
 pinMode(flowdig2, OUTPUT);
 pinMode(tdsdig, OUTPUT);
@@ -235,11 +236,12 @@ pinMode(phdig2, OUTPUT);
 pinMode(tempdig, OUTPUT);
 pinMode(tempdig2, OUTPUT);
 
+//ensures all relays are gated
 digitalWrite(flowdig, LOW);
 digitalWrite(flowdig2, LOW);
 digitalWrite(tdsdig, LOW);
 digitalWrite(tdsdig2, LOW);
-
+  
   status = WiFi.begin(ssid,pass);
   unsigned long t0 = millis();
   unsigned long start2 = millis();
@@ -279,7 +281,7 @@ void loop() {
 }
 
   WiFiClient client = server.available();
-  if (!client) return;
+  if (!client) return; //if there is no python server to connect with, return to beginning of loop()
   if (receivedTime!=0.0){
   String reqLine = client.readStringUntil('\n');
   reqLine.trim(); // removes \r too
@@ -290,7 +292,7 @@ void loop() {
     h.trim();
     if (h.length() == 0) break;
   }
-  bool isGetData = reqLine.startsWith("GET /data");
+  bool isGetData = reqLine.startsWith("GET /data"); //returns true if python GET api request is received --this is necessary for arduino to know that python is ready to receive data
 
   if (!isGetData) {
     client.println("HTTP/1.1 404 Not Found");
