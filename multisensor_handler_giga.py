@@ -34,7 +34,7 @@ client = influxdb_client.InfluxDBClient(url=INFLUX_URL, org=INFLUX_ORG, token=IN
 write_api = client.write_api(write_options=SYNCHRONOUS) #initializing what actually sends data
 last_write_ts=time.time()
 
-GIGA_URL="http://192.168.0.100/data"
+GIGA_URL="http://192.168.0.101/data"
 flow=re.compile(r'flow=([0-9]+.[0-9]+)')
 flow1=re.compile(r'flow1=([0-9]+.[0-9]+)')
 ph=re.compile(r'ph=([0-9]+.[0-9]+)')

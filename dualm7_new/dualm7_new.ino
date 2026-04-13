@@ -10,7 +10,7 @@ uint64_t lastId = 0;
 bool firstSample = true;
 uint64_t receivedCount = 0;
 
-WiFiServer server(80);
+WiFiServer server(80); //create a simple http server that listens for traffic on port 80
 uint64_t receivedTime = 0;
 
 uint64_t sendTime() {
@@ -37,7 +37,7 @@ uint64_t parseId(const std::string &line) {
 void setup() {
   Serial.begin(115200);
 
-  RPC.begin();
+  RPC.begin(); //initialize mechanism that enables interconnectivity between cores
   RPC.bind("sendTime", sendTime);
 
   WiFi.begin(ssid, pass);
@@ -50,7 +50,7 @@ void setup() {
 
   server.begin();
 
-  LL_RCC_ForceCM4Boot();
+  LL_RCC_ForceCM4Boot(); //activates secondary core
 }
 
 void handlePostTime(WiFiClient &client, int contentLength) {
@@ -122,9 +122,9 @@ void handleStream(WiFiClient &client) {
 }
 
 void loop() {
-  if (WiFi.status() != WL_CONNECTED) {
-    WiFi.end();
-    WiFi.begin(ssid, pass);
+  if (WiFi.status() != WL_CONNECTED) { //if arduino isn't connected to  network, reconnect
+    WiFi.end(); //disconnect from wifi stack
+    WiFi.begin(ssid, pass); //connect to local network
 
     unsigned long start = millis();
     while (WiFi.status() != WL_CONNECTED && millis() - start < 5000) {
@@ -132,10 +132,10 @@ void loop() {
     }
   }
 
-  WiFiClient client = server.available();
-  if (!client) return;
+  WiFiClient client = server.available(); //returns server trying to connect to device's ip address (in this case, python server)
+  if (!client) return; //if python server isn't reachable, return to start of loop()
 
-  String reqLine = client.readStringUntil('\n');
+  String reqLine = client.readStringUntil('\n'); //read communication from python server
   reqLine.trim();
 
   int contentLength = 0;
@@ -150,12 +150,12 @@ void loop() {
     }
   }
 
-  if (reqLine.startsWith("POST")) {
+  if (reqLine.startsWith("POST")) { //POST api means python is sending time to arduino.
     handlePostTime(client, contentLength);
     return;
   }
 
-  if (reqLine.startsWith("GET /data")) {
+  if (reqLine.startsWith("GET /data")) { //GET api means arduino is sending data to python
     handleStream(client);
     return;
   }

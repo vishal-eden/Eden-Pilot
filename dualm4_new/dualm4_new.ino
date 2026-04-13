@@ -2,7 +2,7 @@
 #include <string>
 
 const int chunkSize = 400;
-const int bufferSize = 3000;
+const int bufferSize = 3000; //once buffer size is exceeded, new data will overwrite values at the bottom of the buffer
 const uint32_t dtUs = 2000;   // 500 Hz
 
 volatile float accelArr[bufferSize];
@@ -57,7 +57,7 @@ void setup() {
   RPC.bind("getOverwriteCount", getOverwriteCount);
 
   while (true) {
-    auto r = RPC.call("sendTime");
+    auto r = RPC.call("sendTime"); //get time from m7 core
     uint64_t t = r.get().as<uint64_t>();
 
     if (t != 0) {
@@ -77,7 +77,7 @@ void loop() {
     while ((int32_t)(micros() - nextUs) < 0) { }
     nextUs += dtUs;
 
-    int reading = analogRead(A6);
+    int reading = analogRead(A6); //recording analog accelerometer measurements
 
     uint64_t t = baseEpochMs + (sampleIndex * dtUs) / 1000ULL;
     uint64_t thisId = producedCount;

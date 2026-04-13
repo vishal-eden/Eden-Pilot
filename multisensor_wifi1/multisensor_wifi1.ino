@@ -59,7 +59,7 @@ const int temppin=A0;
 const int temppin2=A1;
 const int tdspin=A4;
 const int tdspin2=A5;
-const int hallpin = 4;
+const int hallpin = 4; //for rpm
 const int max_logs = 100;  // Size of full buffer
 
 
@@ -242,6 +242,7 @@ digitalWrite(flowdig2, LOW);
 digitalWrite(tdsdig, LOW);
 digitalWrite(tdsdig2, LOW);
   
+
   status = WiFi.begin(ssid,pass);
   unsigned long t0 = millis();
   unsigned long start2 = millis();
@@ -252,6 +253,8 @@ digitalWrite(tdsdig2, LOW);
     Serial.println("WiFi module not found!");
     while (true) {}
   }
+
+  //if device can't connect to network, try again
   while (status != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -261,6 +264,8 @@ digitalWrite(tdsdig2, LOW);
       while (true) {}
     }
   }
+
+  //start http server. enables future connection to python client through http
 server.begin();  
 
   Wire.begin(); //for i2c (clock)
@@ -275,6 +280,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   Serial.print(WiFi.localIP());
 
+  
   if (WiFi.status() != WL_CONNECTED) {
   WiFi.end();
   WiFi.begin(ssid, pass);
@@ -323,13 +329,11 @@ tds_log1[sample_index]  = loop_tds(tdspin2, tdsdig2);
   client.println("Content-Type: text/plain; charset=utf-8");
   client.println("Connection: close");
   client.println();
-Serial.println("HI");
 client.print("flow=");
 client.print(flow_log[sample_index].flow);
 
 
-Serial.print("raw flow=");
-Serial.println(flow_log[sample_index].flow);
+
 
 client.print("\n");
 Serial.println();
@@ -351,28 +355,20 @@ client.print(ph_log1[sample_index].ph);
 client.print("\n");
 
 client.print("temp=");
-float temp_map  = (temp_log[sample_index].temp  - 204.6f) / 3.860f;
 client.print(temp_log[sample_index].temp);
 
-Serial.print("temp is ");
-Serial.println(temp_map);
 
-Serial.print("raw temp is");
-Serial.println(temp_log[sample_index].temp);
 
 
 client.print("\n");
 
 client.print("temp1=");
-float temp_map1 = (temp_log1[sample_index].temp - 204.6f) / 3.860f;
-Serial.print("raw temp1 is");
-Serial.println(temp_log1[sample_index].temp);
+
 
 
 client.print(temp_log1[sample_index].temp);
 
-Serial.print("temp 1 is ");
-Serial.println(temp_map1);
+
 
 
 
@@ -380,25 +376,15 @@ Serial.println(temp_map1);
 client.print("\n");
 
 client.print("tds=");
-float tds_map  = (tds_log[sample_index].tds  - 204.6f) / 0.0016368f;
 client.print(tds_log[sample_index].tds);
-Serial.print("tds is ");
-Serial.println(tds_map);
 
-Serial.println("raw tds is");
-Serial.println(tds_log[sample_index].tds);
+
 
 
 client.print("\n");
 
 client.print("tds1=");
-float tds_map1 = (tds_log1[sample_index].tds - 204.6f) / 0.0016368f;
 client.print(tds_log1[sample_index].tds);
-Serial.print("tds 1 is ");
-Serial.println(tds_map1);
-
-Serial.println("raw tds1 is");
-Serial.println(tds_log1[sample_index].tds);
 
 client.print("\n");
 
@@ -461,7 +447,7 @@ client.println("Content-Type: text/plain; charset=utf-8");
   client.println("Connection: close");
   client.println();
   client.println("OK");
-client.stop();
+client.stop(); //close connection
 
   }
 
