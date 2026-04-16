@@ -1,7 +1,7 @@
 This repo contains code for the sensor telemetry setup to acquire data measuring the preformance of the 2026 pilot tests for the Eden Tech reverse osmosis centrifuge (ROC). The programs are written for a server-client architecture between Arduino remote devices and a python client. Data is collected by the Arduinos before being wirelessly transmitted to python listeners running on Msc Mini computers which then push the data streams to a time-series database on influx db where live and historical data can be visualized and analyzed.
 
 
-Multisensor Board:  The multi sensor program runs on the Arduino Giga architecture and performs data collection over wi-fi at a pre-specified time interval (usually 5/10 minutes).
+**Multisensor Board:  ** The multi sensor program runs on the Arduino Giga architecture and performs data collection over wi-fi at a pre-specified time interval (usually 5/10 minutes).
 
 The analog metrics collected are:
 
