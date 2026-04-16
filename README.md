@@ -6,9 +6,13 @@ This repo contains code for the sensor telemetry setup to acquire data measuring
 The analog metrics collected are:
 
 -flow (2 sensors)
+
 -ph (2 sensors)
+
 -temperature (2 sensors)
+
 -tds (2 sensors)
+
 -rpm (future)
 
 Sensor Collection Functions:
