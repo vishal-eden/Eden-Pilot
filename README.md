@@ -16,7 +16,7 @@ The analog metrics collected are:
 -rpm (future)
 
 Sensor Collection Functions:<br/>
-loop_flow(analog, digital)
+loop_flow(analog, digital) <br/>
 loop_ph (analog, digital)
 loop_temp (analog, digital)
 loop_tds( analog, digital)
