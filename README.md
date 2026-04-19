@@ -5,7 +5,9 @@ This repo contains code for the sensor telemetry setup to acquire data measuring
 
 **Running Codes**
 
-All of these programs are located locally in /Desktop/Eden Repo/ directory. To run these programs, simply type in the command line python3 [file name[.
+All of these programs are located locally in /Desktop/Eden Repo/ directory. To run these programs, simply type in the command line python3 [file name].
+
+For those unfamiliar with command line syntax, the two needed commands are cd and ls. cd is used to change the working directory. ls is used to retrieve the contents of the files within the current directory. To run the programs, just open the Terminal application and type into the command line: cd Desktop. Then cd Eden\ Repo. 
 
 
 **Multisensor Board:  ** The multi sensor program runs on the Arduino Giga architecture and performs data collection over wi-fi at a pre-specified time interval (usually 5/10 minutes).
