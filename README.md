@@ -27,6 +27,8 @@ Python connects to remote devices by querying IP Address. Unfortunately, IP addr
 
 To log into the local router admin portal, use X43Apples22 as the password. Once logged in, select the "Advanced" option on the top navigation bar. Then on the left side of the screen, select DHCP Server and scroll down to view the ip addresses by device.
 
+Then copy the IP address on this list and paste it on the python file corresponding to the program of interest. You should paste this ip address as the value of the variable named either GIGA_URL or UNO_URL.
+
 **Multisensor Board:  ** The multi sensor program runs on the Arduino Giga architecture and performs data collection over wi-fi at a pre-specified time interval (usually 5/10 minutes).
 
 The analog metrics collected are:<br/>
