@@ -3,7 +3,7 @@ This repo contains code for the sensor telemetry setup to acquire data measuring
 
 
 
-**Running Codes**
+**Running Code**
 
 All of these programs are located locally in /Desktop/Eden Repo/ directory. To run these programs, simply type in the command line python3 [file name].
 
