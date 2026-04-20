@@ -9,6 +9,8 @@ All of these programs are located locally in /Desktop/Eden Repo/ directory. To r
 
 For those unfamiliar with command line syntax, the two needed commands are cd and ls. cd is used to change the working directory. ls is used to retrieve the contents of the files within the current directory. To run the programs, just open the Terminal application and type into the command line: cd Desktop. Then cd Eden\ Repo. 
 
+**Ending Existing Program**
+Control+C On cli interface where program seems to be running
 **Running Strain Guage Programs.**
 
 The two files are called sg_stream_handler.py and sg_stream_handler1.py. 
