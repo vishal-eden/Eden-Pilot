@@ -13,6 +13,9 @@ For those unfamiliar with command line syntax, the two needed commands are cd an
 
 The two files are called sg_stream_handler.py and sg_stream_handler1.py. 
 
+**Running Multisensor Program**
+The python file is multisensor_handler_giga.py.
+
 **Multisensor Board:  ** The multi sensor program runs on the Arduino Giga architecture and performs data collection over wi-fi at a pre-specified time interval (usually 5/10 minutes).
 
 The analog metrics collected are:
