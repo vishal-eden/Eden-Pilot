@@ -30,7 +30,7 @@ To log into the local router admin portal, use X43Apples22 as the password. Once
 Then copy the IP address on this list and paste it on the python file corresponding to the program of interest. You should paste this ip address as the value of the variable named either GIGA_URL or UNO_URL.
 
 **Influx DB**
-Data collected by the Arduinos will not be saved unless Influx DB is runing. Typically it is running. You can verify its presence by accessing the url localhost:8086. If the influx ui doesn't pop up, that should indicate that Influx isn't actually runnng. To fix this, open Docker Desktop. Once open, skip the "Welcome to Docker" page. Once this is done, the Docker Engine should be running. Then, open a new terminal instance and anchor the working directory to 
+Data collected by the Arduinos will not be saved unless Influx DB is runing. Typically it is running. You can verify its presence by accessing the url localhost:8086. If the influx ui doesn't pop up, that should indicate that Influx isn't actually runnng. To fix this, open Docker Desktop. Once open, skip the "Welcome to Docker" page. Once this is done, the Docker Engine should be running. Then, open a new terminal instance and anchor the working directory using cd Desktop/Eden\ Repo. Then run the command docker compose up. 
 
 **Multisensor Board:  ** The multi sensor program runs on the Arduino Giga architecture and performs data collection over wi-fi at a pre-specified time interval (usually 5/10 minutes).
 
