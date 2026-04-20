@@ -27,17 +27,11 @@ Python connects to remote devices by querying IP Address. Unfortunately, IP addr
 
 **Multisensor Board:  ** The multi sensor program runs on the Arduino Giga architecture and performs data collection over wi-fi at a pre-specified time interval (usually 5/10 minutes).
 
-The analog metrics collected are:
-
--flow (2 sensors)
-
-
--ph (2 sensors)
-
--temperature (2 sensors)
-
--tds (2 sensors)
-
+The analog metrics collected are:<br/>
+-flow (2 sensors) <br/>
+-ph (2 sensors) <br/>
+-temperature (2 sensors) <br/>
+-tds (2 sensors) <br/>
 -rpm (future)
 
 Sensor Collection Functions:<br/>
