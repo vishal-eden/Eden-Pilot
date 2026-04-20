@@ -24,6 +24,7 @@ The python file is dual.py
 **IP Address Change**
 
 Python connects to remote devices by querying IP Address. Unfortunately, IP addresses aren't static but dynamically configured the moment a new device enteres the network. This means that if power cycling a device or flashing a new program to the device may trigger an IP adress change, since the device is momentarily disconnecting from the network befoe reconnecting. To view a device's IP address, access the network admin portal. This can be completed by either accessing tplinkwifi.net or use the local area network ip address of the router as a URL for more direct access. Since the router networks are LAN-based, they shouldn't change. Unless swapped with another router, the ip address for the netwok at the test site should remain 192.168.0.1.<br/>
+
 To log into the local router admin portal, use X43Apples22 as the password. Once logged in, select the "Advanced" option on the top navigation bar. Then on the left side of the screen, select DHCP Server and scroll down to view the ip addresses by device.
 
 **Multisensor Board:  ** The multi sensor program runs on the Arduino Giga architecture and performs data collection over wi-fi at a pre-specified time interval (usually 5/10 minutes).
