@@ -9,6 +9,8 @@ All of these programs are located locally in /Desktop/Eden Repo/ directory. To r
 
 For those unfamiliar with command line syntax, the two needed commands are cd and ls. cd is used to change the working directory. ls is used to retrieve the contents of the files within the current directory. To run the programs, just open the Terminal application and type into the command line: cd Desktop. Then cd Eden\ Repo. 
 
+If running python files on a new system (not the mac minis in the cuby or test site), note that the programs will only run correctly if there is a .env file in the directory
+
 **Ending Existing Program**
 Control+C On cli interface where program seems to be running.
 
