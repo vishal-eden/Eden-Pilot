@@ -19,7 +19,8 @@ The two files are called sg_stream_handler.py and sg_stream_handler1.py.
 The python file is multisensor_handler_giga.py.
 
 **Running Accelerometer Program**
-The python file is dual.py
+The python file is dual.py<br/>
+Arduino files are dualm4_new.ino and dualm7_new.ino (one file for each core)
 
 **IP Address Change**
 
