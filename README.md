@@ -58,3 +58,24 @@ Each function:
 4). Averaging those readings.
 5). Wait another 250 ms for settling.
 6). Close relay 
+
+**Database Capacity Planning**
+
+						Accelerometer Program
+Influx Point:
+    * Example: accel accel=1.23 1700000000000
+        * Tag: 5 bytes for “accel”
+        * Measurement Name: 5 bytes for “access”
+        * Acceleration Value:
+            * As 3-4 digit int that is converted to string as line protocol
+                * 3-4 bytes
+        * Unix Timestamp (ms since 1970): 
+            * 13 bytes
+        * Total Bytes Per Point: 13 + 4 +5 + 5 =27
+    * Sampling Rate: 400 Hz
+    * Bytes Per Second: 27 * 400=10,800 bps
+    * Bytes Per Hour: 10,800 bps * 60 = 648,000 bph (bytes per hour)
+    * Bytes Per Day: 648,000*24  = 15,552,000 
+    * Bytes Per Year:  =15,552,000 *365= 5.67658 e 9, (over 5 bill bytes per year)
+                        * Over 5 GB
+
