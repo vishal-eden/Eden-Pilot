@@ -32,6 +32,12 @@ To log into the local router admin portal, use X43Apples22 as the password. Once
 
 Then copy the IP address on this list and paste it on the python file corresponding to the program of interest. You should paste this ip address as the value of the variable named either GIGA_URL or UNO_URL.
 
+**Device MAC Addresses**
+
+Unlike IP addresses, mac addresses are static for a given device. Thus, they can be relied on for identifying a given device on the router portal.
+
+Multisensor Board: 50-26-EF-59-BD-29
+
 **Influx DB**
 Data collected by the Arduinos will not be saved unless Influx DB is runing. Typically it is running. You can verify its presence by accessing the url localhost:8086. If the influx ui doesn't pop up, that should indicate that Influx isn't actually runnng. To fix this, open Docker Desktop. Once open, skip the "Welcome to Docker" page. Once this is done, the Docker Engine should be running. Then, open a new terminal instance and anchor the working directory using cd Desktop/Eden\ Repo. Then run the command docker compose up to spin up a new docker container with influx attached.
 
