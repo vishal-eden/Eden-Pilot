@@ -34,7 +34,7 @@ client = influxdb_client.InfluxDBClient(url=INFLUX_URL, org=INFLUX_ORG, token=IN
 write_api = client.write_api(write_options=SYNCHRONOUS) #initializing what actually sends data
 last_write_ts=time.time()
 
-GIGA_URL="http://192.168.0.103/data"
+GIGA_URL="http://192.168.0.101/data"
 flow=re.compile(r'flow=([0-9]+.[0-9]+)')
 flow1=re.compile(r'flow1=([0-9]+.[0-9]+)')
 ph=re.compile(r'ph=([0-9]+.[0-9]+)')
@@ -51,6 +51,7 @@ try:
     while True: # run indefinitely in loop
         try:
             r = requests.get(GIGA_URL, timeout=10)  #get 
+                    #note that this fnction is blocking, meanign that if get request is received by arduino, python program wont proceed until response is received bny arduino which might take a while given 2 second delays in sensor functions
             print("GET:", r.status_code)
             print(r.text)
             ts = time.time()
