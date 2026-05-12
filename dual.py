@@ -41,37 +41,40 @@ def send_time():
 
 def get_data():
     global records
+    try:
+        r = session.get(data_url, stream=True, timeout=10)
 
-    r = session.get(data_url, stream=True, timeout=10)
+        if r.status_code != 200:
+            print("Request failed:", r.status_code)
+            return
 
-    if r.status_code != 200:
-        print("Request failed:", r.status_code)
-        return
+        for raw_line in r.iter_lines():
+            if not raw_line:
+                continue
 
-    for raw_line in r.iter_lines():
-        if not raw_line:
-            continue
+            line = raw_line.decode("utf-8").strip()
+            print(line)
 
-        line = raw_line.decode("utf-8").strip()
-        print(line)
+            time_match = re.search(timeVal, line)
+            number_match = re.search(number, line)
 
-        time_match = re.search(timeVal, line)
-        number_match = re.search(number, line)
+            if number_match and time_match:
+                accel_val = float(number_match.group(1))
+                time_val = int(time_match.group(1))
 
-        if number_match and time_match:
-            accel_val = float(number_match.group(1))
-            time_val = int(time_match.group(1))
+                point = (
+                    Point("accel")
+                    .field("accel", accel_val)
+                    .time(time_val, WritePrecision.MS)
+                )
+                records.append(point)
 
-            point = (
-                Point("accel")
-                .field("accel", accel_val)
-                .time(time_val, WritePrecision.MS)
-            )
-            records.append(point)
+                if len(records) >= 200:
+                    write_api.write(bucket=bucket, org=INFLUX_ORG, record=records)
+                    records = []
+    except requests.exceptions.RequestException as e:
+        print("Request failed:", type(e).__name__, e)
 
-            if len(records) >= 200:
-                write_api.write(bucket=bucket, org=INFLUX_ORG, record=records)
-                records = []
 
 def main():
     send_time()
