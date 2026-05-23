@@ -85,3 +85,5 @@ Influx Point:<br/>
     * Bytes Per Year:  =15,552,000 *365= 5.67658 e 9, (over 5 bill bytes per year)<br/>
                         * Over 5 GB<br/>
 
+
+**Arduino Debugging Guide**
