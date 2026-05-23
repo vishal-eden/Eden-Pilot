@@ -86,4 +86,6 @@ Influx Point:<br/>
                         * Over 5 GB<br/>
 
 
-**Arduino Debugging Guide**
+**Debugging Guide**
+Tips: <br/>
+	1). Reduce complexity. If a certain program isn't produce intended results, try reducing the software to its core functionality and then see if that works.
