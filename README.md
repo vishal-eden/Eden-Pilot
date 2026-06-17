@@ -55,6 +55,7 @@ loop_flow(analog, digital) <br/>
 loop_ph (analog, digital) <br/>
 loop_temp (analog, digital) <br/>
 loop_tds( analog, digital) <br/>
+loop_rpm( digital) <br/>
 
 
 Each function: <br/>
