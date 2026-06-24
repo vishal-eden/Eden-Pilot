@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+!/usr/bin/env python3
 
 import argparse
 import os
@@ -34,7 +34,7 @@ client = influxdb_client.InfluxDBClient(url=INFLUX_URL, org=INFLUX_ORG, token=IN
 write_api = client.write_api(write_options=SYNCHRONOUS) #initializing what actually sends data
 last_write_ts=time.time()
 
-GIGA_URL="http://192.168.0.101/data"
+GIGA_URL="http://192.168.0.102/data"
 flow=re.compile(r'flow=([0-9]+.[0-9]+)')
 flow1=re.compile(r'flow1=([0-9]+.[0-9]+)')
 ph=re.compile(r'ph=([0-9]+.[0-9]+)')
@@ -44,6 +44,7 @@ tds1=re.compile(r'tds1=([0-9]+.[0-9]+)')
 temp=re.compile(r'temp=([0-9]+.[0-9]+)')
 temp1=re.compile(r'temp1=([0-9]+.[0-9]+)')
 time1=re.compile(r'time=([0-9]+)')
+rpm=re.compile(r'rpm=([0-9]+.[0-9])')
 try:
     r = requests.post(GIGA_URL, data={"time": int(time.time()*1000)})   #send current time to arduino
     print("POST:", r.status_code, repr(r.text))
@@ -51,7 +52,9 @@ try:
     while True: # run indefinitely in loop
         try:
             r = requests.get(GIGA_URL, timeout=10)  #get 
-                    #note that this fnction is blocking, meanign that if get request is received by arduino, python program wont proceed until response is received bny arduino which might take a while given 2 second delays in sensor functions
+            if "No burst ready yet" in r.text:
+                time.sleep(60)
+                continue
             print("GET:", r.status_code)
             print(r.text)
             ts = time.time()
@@ -64,6 +67,7 @@ try:
             tds_match=re.search(tds,r.text)
             tds1_match=re.search(tds1,r.text)
             time_match=re.search(time1,r.text)
+            rpm_match=re.search(rpm,r.text)
             data=Point("Sensor") #initializes data point objecrt specifying bucket on influx
             for line in r.text.splitlines(): #iterate linre by line down GET response
                 line = line.strip()
@@ -71,7 +75,7 @@ try:
                     continue
 
             # expects exactly: "<name>=<value> ts=<timestamp>"
-                m = re.match(r'^(flow1|flow|ph1|ph|tds1|tds|temp1|temp)=([-+]?\d+(?:\.\d+)?)$', line)
+                m = re.match(r'^(flow1|flow|ph1|ph|tds1|tds|temp1|temp|rpm)=([-+]?\d+(?:\.\d+)?)$', line)
                 if m:
                     name = m.group(1) #exxtracts tag
                     val  = float(m.group(2)) #eextracts field
@@ -85,7 +89,9 @@ try:
                         write_api.write(bucket=INFLUX_BUCKET, org=INFLUX_ORG, record=data) #api call to send data to db
                         data=Point("Sensor")
         except requests.exceptions.RequestException as e:
-            print("Request failed:", type(e).__name__, e)
+           #print("Request failed:", type(e).__name__, e)
+            var=6
         
 except requests.exceptions.RequestException as e:
-    print("Request failed:", type(e).__name__, e)
+    #print("Request failed:", type(e).__name__, e)
+    var=5
