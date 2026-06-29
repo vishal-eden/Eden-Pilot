@@ -90,3 +90,8 @@ Influx Point:<br/>
 **Debugging Guide**
 Tips: <br/>
 	1). Reduce complexity. If a certain program isn't produce intended results, try reducing the software to its core functionality and then see if that works.
+
+
+**Accelerometer Program Architecture**
+
+The functionality is divided between two cores. One core (m7) sends and receives information to and from the python server. The other core (m4) performs the actual data acquisition and caching.
