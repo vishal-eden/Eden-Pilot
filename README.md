@@ -94,4 +94,4 @@ Tips: <br/>
 
 **Accelerometer Program Architecture**
 
-The functionality is divided between two cores. One core (m7) sends and receives information to and from the python server. The other core (m4) performs the actual data acquisition and caching.
+The functionality is divided between two cores. One core (m7) sends and receives information to and from the python server. The other core (m4) performs the actual data acquisition and caching. The two cores can communicate and engagee in interprocess communication, sending data values in strings or ints through the Remote Procedure Call. 
