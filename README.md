@@ -66,6 +66,9 @@ Each sensor function: <br/>
 5). Wait another 250 ms for settling.<br/>
 6). Close relay <br/>
 
+Architecture: <br/>
+1). 
+
 **Database Capacity Planning**
 
 						Accelerometer Program
