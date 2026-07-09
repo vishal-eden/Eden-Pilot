@@ -58,7 +58,7 @@ loop_tds( analog, digital) <br/>
 loop_rpm( digital) <br/>
 
 
-Each function: <br/>
+Each sensor function: <br/>
 1). Opens relay to enable respective analog pin access using digital signal from power.<br/>
 2). Wait 250 ms for settling.<br/>
 3). Take several readings from analog pin (number of readings is configurable).<br/>
