@@ -67,8 +67,9 @@ Each sensor function: <br/>
 6). Close relay <br/>
 
 Networking: <br/>
-1). Arduino receives post http message with time from python
-2). Once time is obtained from post message, Arduino commences data collection (isposttime set to true -> schedule_start set to true)
+1). Arduino receives post http message with time from python <br/>
+2). Once time is obtained from post message, Arduino commences data collection (isposttime set to true -> schedule_start set to true) <br/>
+3). After data collection, if Arduino receives GET from python, it sends the data it just collected back to python wirelessly. <br/>
 
 Architecture: <br/>
 1). 
