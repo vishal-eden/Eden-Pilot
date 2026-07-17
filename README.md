@@ -70,6 +70,7 @@ Networking: <br/>
 1). Arduino receives post http message with time from python <br/>
 2). Once time is obtained from post message, Arduino commences data collection (isposttime set to true -> schedule_start set to true) <br/>
 3). After data collection, if Arduino receives GET from python, it sends the data it just collected back to python wirelessly. <br/>
+4). If data collection isn't continous, data colection wil only proceed through collect_burst() once specified interval of time has passed <br/>
 
 Architecture: <br/>
 1). 
