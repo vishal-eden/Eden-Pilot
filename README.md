@@ -66,6 +66,10 @@ Each sensor function: <br/>
 5). Wait another 250 ms for settling.<br/>
 6). Close relay <br/>
 
+Networking: <br/>
+1). Arduino receives post http message with time from python
+2). Once time is obtained from post message, Arduino commences data collection (isposttime set to true -> schedule_start set to true)
+
 Architecture: <br/>
 1). 
 
