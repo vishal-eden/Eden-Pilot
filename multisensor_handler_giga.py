@@ -1,4 +1,3 @@
-!/usr/bin/env python3
 
 import argparse
 import os
@@ -34,7 +33,7 @@ client = influxdb_client.InfluxDBClient(url=INFLUX_URL, org=INFLUX_ORG, token=IN
 write_api = client.write_api(write_options=SYNCHRONOUS) #initializing what actually sends data
 last_write_ts=time.time()
 
-GIGA_URL="http://192.168.0.102/data"
+GIGA_URL="http://192.168.0.9/data"
 flow=re.compile(r'flow=([0-9]+.[0-9]+)')
 flow1=re.compile(r'flow1=([0-9]+.[0-9]+)')
 ph=re.compile(r'ph=([0-9]+.[0-9]+)')
@@ -46,13 +45,14 @@ temp1=re.compile(r'temp1=([0-9]+.[0-9]+)')
 time1=re.compile(r'time=([0-9]+)')
 rpm=re.compile(r'rpm=([0-9]+.[0-9])')
 try:
-    r = requests.post(GIGA_URL, data={"time": int(time.time()*1000)})   #send current time to arduino
+    r = requests.post(GIGA_URL, data={"time": int(time.time()*1000)}, timeout=50)   #send current time to arduino
     print("POST:", r.status_code, repr(r.text))
 
     while True: # run indefinitely in loop
         try:
             r = requests.get(GIGA_URL, timeout=10)  #get 
             if "No burst ready yet" in r.text:
+                print("no bursts ready")
                 time.sleep(60)
                 continue
             print("GET:", r.status_code)
@@ -89,9 +89,8 @@ try:
                         write_api.write(bucket=INFLUX_BUCKET, org=INFLUX_ORG, record=data) #api call to send data to db
                         data=Point("Sensor")
         except requests.exceptions.RequestException as e:
-           #print("Request failed:", type(e).__name__, e)
-            var=6
+           print("Request failed:", type(e).__name__, e)
         
 except requests.exceptions.RequestException as e:
-    #print("Request failed:", type(e).__name__, e)
+    print("Request failed:", type(e).__name__, e)
     var=5
