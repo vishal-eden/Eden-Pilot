@@ -32,6 +32,16 @@ To log into the local router admin portal, use X43Apples22 as the password. Once
 
 Then copy the IP address on this list and paste it on the python file corresponding to the program of interest. You should paste this ip address as the value of the variable named either GIGA_URL or UNO_URL.
 
+Sometimes, the UI keeps stale IP addresses, resulting in a situation where it is difficult to distinguish between newly active and stale devices. One way to determine whether an IP address is active is through the ping command run through the command line interface (cli). Candidate IP addresses will be taking values between 192.168.0.100 - 192.168.0.109. 
+
+Moreover, the following addresses are already reserved.
+    * 192.168.0.102 for Multisensor Board
+    * 192.168.0.100 for Strain Gauge Board
+    * 192.167.101 for Strain Gauge Board
+
+If one of these boards are replaced, the new device will most likely take a value other than the reserved addresses unless two hours (lease time) have passed since the last board was removed. If a device with a reserved address is disconnected and reconnected within the two hour span, it will most likely retain its ip address. 
+
+
 **Device MAC Addresses**
 
 Unlike IP addresses, mac addresses are static for a given device. Thus, they can be relied on for identifying a given device on the router portal.
