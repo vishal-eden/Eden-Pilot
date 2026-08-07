@@ -41,6 +41,8 @@ Moreover, the following addresses are already reserved.
 
 If one of these boards are replaced, the new device will most likely take a value other than the reserved addresses unless two hours (lease time) have passed since the last board was removed. If a device with a reserved address is disconnected and reconnected within the two hour span, it will most likely retain its ip address. 
 
+If IP does change, after subsittuting the new value into the GIGA_URL/UNO_URL field in the code, keep note of this new value.
+
 
 **Device MAC Addresses**
 
